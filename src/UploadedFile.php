@@ -2,6 +2,6 @@
 
 namespace Viraj\Upload;
 
-class Upload
+class UploadedFile
 {
 }

@@ -1,0 +1,4 @@
+suites:
+    acme_suite:
+        namespace: Viraj\Upload
+        psr4_prefix: Viraj\Upload

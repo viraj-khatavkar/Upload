@@ -5,10 +5,10 @@ namespace spec\Viraj\Upload;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class UploadSpec extends ObjectBehavior
+class UploadedFileSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Viraj\Upload\Upload');
+        $this->shouldHaveType('Viraj\Upload\UploadedFile');
     }
 }
