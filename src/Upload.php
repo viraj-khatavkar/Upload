@@ -6,25 +6,47 @@ use Viraj\Upload\Exceptions\InvalidFileException;
 
 class Upload
 {
-    public function file($field_name)
+    private $files;
+
+    /**
+     * @param $field_name
+     *
+     * @throws \Viraj\Upload\Exceptions\InvalidFileException
+     */
+    public function file ( $field_name )
     {
-        if (trim ($field_name) == '') {
-            throw new InvalidFileException('File seems to be corrupt or Invalid');
+        if ( trim ( $field_name ) == '' )
+        {
+            throw new InvalidFileException( 'File seems to be corrupt or Invalid' );
         }
+
+        $this->files = $this->normalize ( $_FILES );
     }
 
-    public function normalize($argument)
+    /**
+     * @param $argument
+     *
+     * @return mixed
+     */
+    public function normalize ( $argument )
     {
-        $newfiles = [ ];
+        $files = [ ];
 
-        foreach ($argument as $fieldname => $fieldvalue):
-            foreach ($fieldvalue as $paramname => $paramvalue):
-                foreach ((array)$paramvalue as $index => $value):
-                    $newfiles[ $fieldname ][ $index ][ $paramname ] = $value;
+        if ( is_array ( $argument[ 'name' ] ) )
+        {
+            foreach ( $argument as $file_parameter => $value_array ):
+                foreach ( $value_array as $key => $value ):
+                    $files[ $key ][ $file_parameter ] = $value;
                 endforeach;
             endforeach;
-        endforeach;
+        }
+        else
+        {
+            foreach ( $argument as $key => $value ):
+                $files[ 0 ][ $key ] = $value;
+            endforeach;
+        }
 
-        return $newfiles[ 'files' ];
+        return $files;
     }
 }
