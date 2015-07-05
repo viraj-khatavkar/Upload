@@ -7,6 +7,26 @@ use Prophecy\Argument;
 
 class UploadSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $_FILES['files'] = [
+            'name'  => [
+                0 => 'demo 1' ,
+                1 => 'demo 2'
+            ] ,
+            'type'  => [
+                0 => 'image/jpeg' ,
+                1 => 'image/jpeg'
+            ] ,
+            'error' => [
+                0 => 0 ,
+                1 => 1
+            ]
+        ];
+
+        $this->beConstructedWith('files');
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType( 'Viraj\Upload\Upload' );

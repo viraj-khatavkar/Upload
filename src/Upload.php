@@ -8,19 +8,12 @@ class Upload
 {
     private $files;
 
-    /**
-     * @param $field_name
-     *
-     * @throws \Viraj\Upload\Exceptions\InvalidFileException
-     */
-    public function file ( $field_name )
-    {
-        if ( trim ( $field_name ) == '' )
-        {
-            throw new InvalidFileException( 'File seems to be corrupt or Invalid' );
-        }
+    private $field_name;
 
-        $this->files = $this->normalize ( $_FILES );
+    public function __construct( $field_name )
+    {
+        $this->field_name = $field_name;
+        $this->files = $this->normalize( $_FILES[ $field_name ] );
     }
 
     /**
@@ -28,11 +21,11 @@ class Upload
      *
      * @return mixed
      */
-    public function normalize ( $argument )
+    public function normalize( $argument )
     {
         $files = [ ];
 
-        if ( is_array ( $argument[ 'name' ] ) )
+        if ( is_array( $argument[ 'name' ] ) )
         {
             foreach ( $argument as $file_parameter => $value_array ):
                 foreach ( $value_array as $key => $value ):
@@ -48,5 +41,20 @@ class Upload
         }
 
         return $files;
+    }
+
+    /**
+     * @param $field_name
+     *
+     * @throws \Viraj\Upload\Exceptions\InvalidFileException
+     */
+    public function file( $field_name )
+    {
+        if ( trim( $field_name ) == '' )
+        {
+            throw new InvalidFileException( 'File seems to be corrupt or Invalid' );
+        }
+
+        $this->files = $this->normalize( $_FILES );
     }
 }
