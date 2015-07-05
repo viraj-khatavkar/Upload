@@ -32,11 +32,6 @@ class UploadSpec extends ObjectBehavior
         $this->shouldHaveType( 'Viraj\Upload\Upload' );
     }
 
-    function it_should_return_an_exception_for_blank_file_name()
-    {
-        $this->shouldThrow( 'Viraj\Upload\Exceptions\InvalidFileException' )->during( 'file' , [ '' ] );
-    }
-
     function it_should_return_normalized_multidimensional_array_for_native_multidimensional_array_of_files()
     {
         $files = [
@@ -87,5 +82,27 @@ class UploadSpec extends ObjectBehavior
         ];
 
         $this->normalize( $files )->shouldReturn( $expected_normalized_array );
+    }
+
+    function it_should_return_an_exception_for_blank_file_name()
+    {
+        $_FILES['files_error'] = [
+            'name'  => [
+                0 => ''
+            ]
+        ];
+
+        $this->shouldThrow( 'Viraj\Upload\Exceptions\InvalidFileException' )->during('__construct', ['files_error']);
+    }
+
+    function it_should_return_an_exception_for_file_name_with_spaces()
+    {
+        $_FILES['files_error'] = [
+            'name'  => [
+                0 => '  '
+            ]
+        ];
+
+        $this->shouldThrow( 'Viraj\Upload\Exceptions\InvalidFileException' )->during('__construct', ['files_error']);
     }
 }

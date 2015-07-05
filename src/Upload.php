@@ -7,19 +7,19 @@ use Viraj\Upload\Exceptions\InvalidFileException;
 class Upload
 {
     private $files;
+    private $files_key;
 
-    private $field_name;
-
-    public function __construct( $field_name )
+    public function __construct( $files_key )
     {
-        $this->field_name = $field_name;
-        $this->files = $this->normalize( $_FILES[ $field_name ] );
+        $this->files_key = $files_key;
+        $this->files = $this->normalize( $_FILES[ $files_key ] );
+        $this->validate();
     }
 
     /**
      * @param $argument
      *
-     * @return mixed
+     * @return array
      */
     public function normalize( $argument )
     {
@@ -43,18 +43,13 @@ class Upload
         return $files;
     }
 
-    /**
-     * @param $field_name
-     *
-     * @throws \Viraj\Upload\Exceptions\InvalidFileException
-     */
-    public function file( $field_name )
+    public function validate()
     {
-        if ( trim( $field_name ) == '' )
-        {
-            throw new InvalidFileException( 'File seems to be corrupt or Invalid' );
-        }
-
-        $this->files = $this->normalize( $_FILES );
+        foreach ( $this->files as $file ):
+            if ( trim( $file[ 'name' ] ) == '' )
+            {
+                throw new InvalidFileException;
+            }
+        endforeach;
     }
 }
