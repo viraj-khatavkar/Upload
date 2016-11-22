@@ -2,6 +2,7 @@
 
 namespace Viraj\Upload;
 
+
 use Viraj\Upload\Exceptions\InvalidFileException;
 
 class Upload
